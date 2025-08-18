@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+spacy
+networkx
+nltk
+python-multipart
