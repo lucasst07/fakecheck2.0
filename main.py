@@ -55,7 +55,7 @@ def carregar_recursos():
 
     # Carrega o modelo do spaCy
     try:
-        nlp = spacy.load("pt_core_news_sm")
+        nlp = spacy.load("pt_core_news_md")
         print("✅ Modelo spaCy carregado")
     except Exception as e:
         print(f"❌ Erro ao carregar modelo spaCy: {str(e)}")
