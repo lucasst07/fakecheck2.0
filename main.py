@@ -38,22 +38,25 @@ class NoticiaRequest(BaseModel):
     conteudo: str
 
 
-# Carrega recursos na inicialização da API
+base_dir = os.path.dirname(os.path.abspath(__file__))
+json_path = os.path.join(base_dir, "grafo_json.json")
+
 @app.on_event("startup")
 def carregar_recursos():
     global G, nlp
 
-    # Carrega o grafo de conhecimento
     try:
-        with open("grafo_json.json", "r", encoding='utf-8') as f:
+        with open(json_path, "r", encoding='utf-8') as f:
             loaded_data = json.load(f)
         G = json_graph.node_link_graph(loaded_data)
         print(f"✅ Grafo carregado: {len(G.nodes)} nós, {len(G.edges)} arestas")
+    except FileNotFoundError:
+        print(f"❌ Arquivo não encontrado no caminho: {json_path}")
+        raise RuntimeError("Falha ao carregar grafo de conhecimento: Arquivo não encontrado")
     except Exception as e:
         print(f"❌ Erro ao carregar grafo: {str(e)}")
         raise RuntimeError("Falha ao carregar grafo de conhecimento") from e
 
-    # Carrega o modelo do spaCy
     try:
         nlp = spacy.load("pt_core_news_md")
         print("✅ Modelo spaCy carregado")
