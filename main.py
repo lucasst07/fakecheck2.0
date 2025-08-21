@@ -97,7 +97,9 @@ def extract_triples(text):
 
 # Função de cálculo de valor de verdade
 def calcular_valor_verdade(grafo, sujeito, objeto):
+        print(f"DEBUG: Verificando sujeito: {sujeito}, objeto: {objeto}") # Adicione esta linha
     if sujeito not in grafo or objeto not in grafo:
+                print(f"DEBUG: Sujeito ou objeto não encontrado no grafo.")
         return 0.0
     try:
         caminhos = nx.all_shortest_paths(grafo, sujeito, objeto)
@@ -111,18 +113,20 @@ def calcular_valor_verdade(grafo, sujeito, objeto):
         return 0.0
 
 
-# Função orquestradora principal
 def verificar_noticia_completa(sentenca):
     triplas = extract_triples(pre_processamento(sentenca))
+    print(f"DEBUG: Triplas extraídas: {triplas}")  # Adicione esta linha
     if not triplas:
         return 0.0, "Nenhuma tripla válida encontrada."
 
     valores_tau = []
     for s, p, o in triplas:
         tau = calcular_valor_verdade(G, s, o)
+        print(f"DEBUG: Calculando tau para ({s}, {o}) = {tau}") # Adicione esta linha
         valores_tau.append(tau)
 
     tau_final = sum(valores_tau) / len(valores_tau) if valores_tau else 0.0
+    print(f"DEBUG: Tau final: {tau_final}") # Adicione esta linha
     limiar = 0.80
     classificacao = "verdadeira" if tau_final > limiar else "falsa"
     return tau_final, classificacao
