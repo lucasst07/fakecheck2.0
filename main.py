@@ -58,7 +58,7 @@ def carregar_recursos():
         raise RuntimeError("Falha ao carregar grafo de conhecimento") from e
 
     try:
-        nlp = spacy.load("pt_core_news_md")
+        nlp = spacy.load("pt_core_news_lg")
         print("✅ Modelo spaCy carregado")
     except Exception as e:
         print(f"❌ Erro ao carregar modelo spaCy: {str(e)}")
